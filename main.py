@@ -128,3 +128,6 @@ if __name__ ==  "__main__":
     except: 
         # the time and reward arrays were not instantiated for the algorithms
         pass
+    
+
+    # print("Test Command")
