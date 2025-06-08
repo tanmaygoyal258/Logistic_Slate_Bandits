@@ -1,6 +1,6 @@
 import numpy as np
 from tqdm import tqdm
-from ada_OFU_ECOLog import ada_OFU_ECOLog
+from ada_ofu_ecolog import ada_OFU_ECOLog
 from Slate_GLM_OFU import Slate_GLM_OFU
 from MPS import MPS
 from TS_ECOLog import TS_ECOLog
