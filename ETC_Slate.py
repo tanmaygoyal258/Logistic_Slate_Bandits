@@ -13,6 +13,7 @@ class ETC_Slate():
         self.arm_dim = params["arm_dim"]
         self.horizon = params["horizon"]
         self.total_slates = self.item_count ** self.slot_count
+        self.num_contexts = 1
         
         # we would like to deal with the combination of all indices rather than arms
         self.arm_indices = [[j for j in range(self.item_count)] for i in range(self.slot_count)]
@@ -21,7 +22,8 @@ class ETC_Slate():
         self.arm_set = self.generate_slot_arms(np.random.default_rng(params["arm_seed"]))[0] # fixed arm setting
         self.all_possible_arms = self.possible_combination_arm(self.arm_set)
 
-        self.oracle = GLMOracle(theta_star , sigmoid)
+        self.oracle = GLMOracle(theta_star , sigmoid , np.random.default_rng(params["reward_seed"]))
+
 
         self.m = 1
         self.kappa = (self.horizon**(-1/3)) * \
