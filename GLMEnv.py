@@ -10,9 +10,10 @@ from utils import sigmoid , probit , dsigmoid , dprobit
 from time import time
 
 class GLMOracle():
-    def __init__(self , theta_star , reward_model):
+    def __init__(self , theta_star , reward_model, reward_generator):
         self.theta_star = theta_star
         self.reward_model = reward_model
+        self.reward_rng = reward_generator
     
     def expected_reward(self , arm):
         '''
@@ -30,21 +31,20 @@ class GLMOracle():
         '''
         the actual reward is sampled from a Bernoulli Distribution with mean equal to the expected reward
         '''
-        return int(np.random.rand() < self.expected_reward(arm))
+        return self.reward_rng.binomial(1, self.expected_reward(arm))
     
 
 class GLMEnv():
-    def __init__(self, params , slot_arms , theta_star):
-        self.seed = params["seed"]
+    def __init__(self, params , theta_star):
+        # self.seed = params["seed"]
 
         self.alg_name = params["alg_name"]
-        self.warmup = params["warmup"]
         self.reward_type = params["reward_type"]
         self.num_contexts = params["num_contexts"]       
         self.thetastar = theta_star
         self.reward_func = sigmoid if self.reward_type == "logistic" else probit
         self.d_reward_func = dsigmoid if self.reward_type == "logistic" else dprobit
-        self.oracle = GLMOracle(theta_star , self.reward_func)
+        self.oracle = GLMOracle(theta_star , self.reward_func, np.random.default_rng(params["reward_seed"]))
 
         self.item_count = params["item_count"]
         self.slot_count = params["slot_count"]
@@ -58,11 +58,11 @@ class GLMEnv():
         self.pull_time_arr = np.empty(self.horizon)
         self.update_time_arr = np.empty(self.horizon)
 
-        self.slot_arms = slot_arms
+        self.slot_arms = self.generate_slot_arms(np.random.default_rng(params["arm_seed"]))
         self.all_combination_arms = []
         self.ctr = 0
 
-        np.random.seed(self.seed)
+        # np.random.seed(self.seed)
 
         if self.alg_name == "ada_ofu_ecolog":
             self.alg = ada_OFU_ECOLog(params)
@@ -158,3 +158,16 @@ class GLMEnv():
         for arm in arm_set:
             min_mu_dot = min(min_mu_dot , self.d_reward_func(np.dot(arm , self.thetastar)))
         return 1.0/min_mu_dot
+    
+    def generate_slot_arms(self , arms_rng):
+        all_arms = []
+        for c in range(self.num_contexts):
+            context_arms = []
+            for s in range(self.slot_count):
+                slot_arms = []
+                for _ in range(self.item_count):
+                    slot_arms.append([arms_rng.random()*2-1 for i in range(self.arm_dim)])
+                slot_arms = [arm/np.linalg.norm(arm) * 1/np.sqrt(self.slot_count) for arm in slot_arms]
+                context_arms.append(slot_arms)
+            all_arms.append(context_arms)
+        return all_arms

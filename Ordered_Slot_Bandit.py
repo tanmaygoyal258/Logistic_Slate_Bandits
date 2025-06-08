@@ -8,7 +8,7 @@ from utils import sigmoid , dsigmoid
 
 class Ordered_Slot_Bandit():
 
-    def __init__(self , params , arm_set , theta_star):
+    def __init__(self , params , theta_star):
         self.alg_name = params["alg_name"]
         self.slot_count = params["slot_count"]
         self.item_count = params["item_count"]
@@ -17,7 +17,7 @@ class Ordered_Slot_Bandit():
         
         self.oracle = GLMOracle(theta_star , sigmoid)
 
-        self.arm_set = arm_set[0] # fixed arm setting
+        self.arm_set = self.generate_slot_arms(np.random.default_rng(params["arm_seed"]))[0] # fixed arm setting
         self.all_possible_arms = self.possible_combination_arm(self.arm_set)
         self.one_matrix_for_slots = self.construct_one_matrix_for_slots()
 
@@ -114,3 +114,16 @@ class Ordered_Slot_Bandit():
             np.clip(loss_matrix , -1 , 1)
             # send the loss_matrix back to the mw engine
             self.mw_engine.computeAfterLossOrdered(loss_matrix)
+
+    def generate_slot_arms(self , arms_rng):
+        all_arms = []
+        for c in range(self.num_contexts):
+            context_arms = []
+            for s in range(self.slot_count):
+                slot_arms = []
+                for _ in range(self.item_count):
+                    slot_arms.append([arms_rng.random()*2-1 for i in range(self.arm_dim)])
+                slot_arms = [arm/np.linalg.norm(arm) * 1/np.sqrt(self.slot_count) for arm in slot_arms]
+                context_arms.append(slot_arms)
+            all_arms.append(context_arms)
+        return all_arms
