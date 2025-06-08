@@ -129,7 +129,3 @@ if __name__ ==  "__main__":
         # the time and reward arrays were not instantiated for the algorithms
         pass
     
-
-    # print("Test Command")
-    # print("Another Test Command")
-    # print("Another Another Test Command")
