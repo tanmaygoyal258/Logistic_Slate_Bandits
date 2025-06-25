@@ -71,7 +71,7 @@ if __name__ ==  "__main__":
 
 
     # check validity of the data path
-    data_path = f"Results/v3"
+    data_path = f"Results"
     if not os.path.exists(data_path):
             os.makedirs(data_path)
     data_path_with_alg = f"{data_path}/{args.alg_name}"
