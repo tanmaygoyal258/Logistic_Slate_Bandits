@@ -2,10 +2,9 @@
 __pycache__
 
 Initial_Attempt/*
-result_analysis.ipynb
+*.ipynb
 *.npy
 configs/*
 Results/*
-Results*
 Plots/*
 compiled_runs*

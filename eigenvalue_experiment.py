@@ -91,10 +91,10 @@ if __name__ ==  "__main__":
         # generate the arms for each slot
         slot_arms = generate_slot_arms(params)
 
-        data_path = "Results/Eigenvalue_Experiment_Results"
+        data_path = "Eigenvalue_Experiment_Results"
         if not os.path.exists(data_path):
             os.makedirs(data_path)
-        data_path_alg = f"Results/Eigenvalue_Experiment_Results/{args.alg_name}"
+        data_path_alg = f"Eigenvalue_Experiment_Results/{args.alg_name}"
         if not os.path.exists(data_path_alg):
             os.makedirs(data_path_alg)
 
