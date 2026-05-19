@@ -19,13 +19,19 @@ The following algorithms have been implemented:
 
 If you find our work useful, please consider citing us:
 ```
-@misc{goyal2025efficientalgorithmslogisticcontextual,
-      title={Efficient Algorithms for Logistic Contextual Slate Bandits with Bandit Feedback}, 
-      author={Tanmay Goyal and Gaurav Sinha},
-      year={2025},
-      eprint={2506.13163},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2506.13163}, 
+@InProceedings{pmlr-v286-goyal25a,
+  title = 	 {Efficient Algorithms for Logistic Contextual Slate Bandits with Bandit Feedback},
+  author =       {Goyal, Tanmay and Sinha, Gaurav},
+  booktitle = 	 {Proceedings of the Forty-first Conference on Uncertainty in Artificial Intelligence},
+  pages = 	 {1533--1568},
+  year = 	 {2025},
+  editor = 	 {Chiappa, Silvia and Magliacane, Sara},
+  volume = 	 {286},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {21--25 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://raw.githubusercontent.com/mlresearch/v286/main/assets/goyal25a/goyal25a.pdf},
+  url = 	 {https://proceedings.mlr.press/v286/goyal25a.html}
 }
+
 ```
